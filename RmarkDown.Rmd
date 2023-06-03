@@ -1,0 +1,107 @@
+---
+title: "TrabajoFinal"
+author: "David M. Villalobo"
+date: "2023-06-03"
+output: html_document
+---
+
+```{r setup}
+library(plyr)
+BaseDatosFinal$Tipo <- mapvalues(BaseDatosFinal$Tipo, from = c("blade", "flake"), to = c(1,0))
+```
+
+## R Markdown
+
+
+```{r cars}
+library(ggplot2)
+ggplot(BaseDatosFinal, aes(x = Longitud, y = Anchura, color = Tipo)) + geom_point()
+```
+
+## Including Plots
+
+
+```{r pressure, echo=FALSE}
+ggplot(BaseDatosFinal, aes(x = Grosor, y = Peso, color = Tipo)) + geom_point()
+```
+
+
+```{r}
+BaseDatosFinal$Tipo_fac <- as.factor(BaseDatosFinal$Tipo)
+BaseDatosFinal$Tipo_fac
+```
+
+
+```{r}
+summary(glm(Tipo_fac ~ Anchura, BaseDatosFinal, family = "binomial"))
+```
+```{r}
+summary(glm(Tipo_fac ~ Longitud, BaseDatosFinal, family = "binomial"))
+```
+
+```{r}
+summary(glm(Tipo_fac ~ Grosor, BaseDatosFinal, family = "binomial"))
+```
+
+```{r}
+summary(glm(Tipo_fac ~ Peso, BaseDatosFinal, family = "binomial"))
+```
+
+
+```{r}
+summary(glm(Tipo_fac ~ Anchura + Longitud, BaseDatosFinal, family = "binomial"))
+```
+```{r}
+summary(glm(Tipo_fac ~ Grosor + Peso, BaseDatosFinal, family = "binomial"))
+```
+
+```{r}
+summary(glm(Tipo_fac ~ Anchura + Longitud + Grosor, BaseDatosFinal, family = "binomial"))
+```
+
+```{r}
+summary(glm(Tipo_fac ~ Anchura + Longitud + Grosor + Peso, BaseDatosFinal, family = "binomial"))
+```
+
+```{r}
+summary(glm(Tipo_fac ~ Longitud + Grosor + Peso, BaseDatosFinal, family = "binomial"))
+```
+
+```{r}
+summary(glm(Tipo_fac ~ Longitud + Grosor, BaseDatosFinal, family = "binomial"))
+```
+
+```{r}
+summary(glm(Tipo_fac ~ Longitud + Peso, BaseDatosFinal, family = "binomial"))
+```
+
+
+```{r}
+BaseDatosFinal$Longitud_Anchura <- BaseDatosFinal$Longitud/BaseDatosFinal$Anchura
+```
+
+```{r}
+summary(glm(Tipo_fac ~ Longitud_Anchura, BaseDatosFinal, family = "binomial"))
+```
+
+```{r}
+summary(glm(Tipo_fac ~ Longitud_Anchura + Peso, BaseDatosFinal, family = "binomial"))
+```
+
+
+```{r}
+summary(glm(Tipo_fac ~ Longitud_Anchura + Grosor, BaseDatosFinal, family = "binomial"))
+```
+
+
+```{r}
+mean(BaseDatosFinal$Longitud_Anchura [BaseDatosFinal$Tipo == "0"]) 
+
+```
+
+```{r}
+mean(BaseDatosFinal$Longitud_Anchura [BaseDatosFinal$Tipo == "1"])
+```
+
+
+
