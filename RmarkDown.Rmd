@@ -4,33 +4,47 @@ author: "David M. Villalobo"
 date: "2023-06-03"
 output: html_document
 ---
+## Introducción
+
+La base de datos utilizada para este trabajo, obtenida de la página web "Comparative Archaeology Database", presenta diferentes Laminas (blade) y Lascas (flake) de obsidiana, y cada una presenta una serie de variables características (Anchura, Grosor, Longitud y Peso). Para este trabajo he tenido en cuenta que la norma general sobre las laminas y las lascas, es que las laminas suelen ser dos veces más largas que anchas. En este trabajo buscaré si hay relación entre los diferentes parámetros
+arqueométricos con respecto a que un instrumento sea blade o flake. 
+
+## Primer Paso
+
+En la variable Tipo, las opciones blade y flake son renombradas como 1 (blade) y 0 (flake). Esto nos ayudará para llevar a cabo modelos logísticos. Suele llevarse a cabo con variables categóricas como es en este caso.
 
 ```{r setup}
 library(plyr)
 BaseDatosFinal$Tipo <- mapvalues(BaseDatosFinal$Tipo, from = c("blade", "flake"), to = c(1,0))
 ```
 
-## R Markdown
+## Segundo Paso
 
+Realizo gráficos de distribución para poder tener una visión general de la variabilidad de los datos, ver patrones y valores atípicos. Para utilizar los códigos es necesario la librería de ggplot2. Los puntos que se muestran se distribuyen según las variables utilizadas. La función color = Tipo dentro de aes() nos permite hacer una diferenciación por colores de cada categoría de la variable Tipo. Azul hace referencia a blade(1) y rojo es flake(0).
 
 ```{r cars}
 library(ggplot2)
 ggplot(BaseDatosFinal, aes(x = Longitud, y = Anchura, color = Tipo)) + geom_point()
 ```
-
-## Including Plots
+En este gráfico de distribución donde se han utilizado las variables Anchura y Longitud podemos observar que, teniendo en cuenta que blade suele ser dos veces más largas que anchas, no se ve con claridad este característica diferenciadora. Aunque es cierto que se puede observar más "blade" con mayor longitud que "flake". 
 
 
 ```{r pressure, echo=FALSE}
 ggplot(BaseDatosFinal, aes(x = Grosor, y = Peso, color = Tipo)) + geom_point()
 ```
+Esta gráfica de distribución donde se han utilizado las variables Peso y Grosor no aporta resultados significativos con respecto a la relación, de estas variables, con la diferenciación de "blade" o "flake".
 
+## Tercer Paso
+
+Creo la variable Tipo_fac, convirtiendo con la función as.factor() la variable Tipo en un factor. Esto nos permitirá trabajar con la variable categórica de una manera adecuada, ya que será necesario para los modelos que utilizo en los siguientes pasos del trabajo.
 
 ```{r}
 BaseDatosFinal$Tipo_fac <- as.factor(BaseDatosFinal$Tipo)
 BaseDatosFinal$Tipo_fac
 ```
+## Cuarto Paso
 
+Llevo a cabo modelos logísticos simples para analizar y predecir la relación entre variables. Al utilizar "family = binomial()", se establece que se está ajustando un modelo logístico binomial, adecuado para la variable binaria utilizada (Tipo_fac). Si el valor obtenido en el Valor p (Pr(>|z|)) es superior al nivel de significanza comúnmente utilizado (0.05), no habrá evidencia suficiente para afirmar que existe una relación significativa entre las variables utilizadas.
 
 ```{r}
 model <- glm(Tipo_fac ~ Anchura, data = BaseDatosFinal, family = binomial())
@@ -50,7 +64,11 @@ summary(model3)
 model4 <- glm(Tipo_fac ~ Peso, data = BaseDatosFinal, family = binomial())
 summary(model4)
 ```
+Podemos observar que ninguno de los modelos simples realizados da una relación significativa entre los parámetros arqueométricos y Tipo_fac. Esto da a entender que ninguna de esas variables por si solas son suficiente como para diferenciar los dos tipos de producción (1 y 0).
 
+## Quinto Paso
+
+En este caso, realizo modelos logísticos multiples. La principal diferencia con el ejercicio anterior es que se utiliza, para analizar y predecir la relación, una variable de respuesta binaria (Tipo_fac), como antes, pero ahora se utilizan múltiples variables predictoras. Al igual que en el anterior paso, el valor p obtenido en cada modelo realizado no da una relación significativa, ya que el valor p sale superior a 0.05. En algunos de los modelos en los que la Longitud no estaba junto a la variable Anchura, se puede observar que la variable Longitud está cerca de una posible relación significativa, pero no es suficiente. 
 
 ```{r}
 model_1 <- glm(Tipo_fac ~ Anchura + Longitud, data = BaseDatosFinal, family = binomial())
@@ -85,16 +103,29 @@ summary(model_6)
 model_7 <- glm(Tipo_fac ~ Longitud + Peso, data = BaseDatosFinal, family = binomial())
 summary(model_7)
 ```
+## Sexto Paso
+
+En este paso creo la variable proporción longitud/anchura, ya que en principio, debería ser la que más sentido arqueológico tiene. 
 
 
 ```{r}
 BaseDatosFinal$Longitud_Anchura <- BaseDatosFinal$Longitud/BaseDatosFinal$Anchura
 ```
 
+## Septimo Paso
+
+Volvemos a realizar un modelo simple, pero esta vez con la nueva variable creada. Vemos que el valor AIC obtenido es el más bajo hasta el momento, por lo que indica un mejor ajuste del modelo. 
+
+
 ```{r}
 model5 <- glm(Tipo_fac ~ Longitud_Anchura, data = BaseDatosFinal, family = binomial())
 summary(model5)
 ```
+Podemos observar que en este caso si existe una relación significativa, aunque poca, algo que seguramente se deba al tamaño de la muestra utilizada. 
+
+## Octavo Paso
+
+
 
 ```{r}
 model_8 <- glm(Tipo_fac ~ Longitud_Anchura + Peso, data = BaseDatosFinal, family = binomial())
