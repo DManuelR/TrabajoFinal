@@ -2,7 +2,9 @@
 title: "TrabajoFinal"
 author: "David M. Villalobo"
 date: "2023-05-26"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 ## Introducción
 
@@ -144,6 +146,8 @@ Con los códigos utilizados en esta parte podemos calcular la media de los valor
 
 Al observar la proporción promedio de cada tipo de instrumento, vemos que "flake"(0) o también conocido como lascas, da un resultado de 1, por lo que podemos considerar que su anchura y largo son iguales. Por otro lado, la proporción obtenida para "blade"(1) o laminas, es de 1.33,  por lo que se puede considerar que la anchura es dos tercios de la longitud.
 
+Esto se debe a que cuanto más cerca esté el resultado de la media a 1, puede significar que la relación ancho y longitud sea más cercana a una proporción de 1:1.
+
 
 ```{r}
 mean(BaseDatosFinal$Longitud_Anchura [BaseDatosFinal$Tipo == "0"]) 
@@ -153,14 +157,29 @@ mean(BaseDatosFinal$Longitud_Anchura [BaseDatosFinal$Tipo == "0"])
 ```{r}
 mean(BaseDatosFinal$Longitud_Anchura [BaseDatosFinal$Tipo == "1"])
 ```
+## Decimo Paso
+
+Llevo a cabo el test t para asegurar los resultados obtenidos con anterioridad, es decir, confirmar la diferencia entre 1 y 0. Fijandome en el p-value llego a la conclusión de que en "1" al ser el p-value inferior a 0.05 hay una diferencia significativa entre las medidas de anchura y longitud. Mientras que en el "0" el p-value es mayor a 0.05 y por lo tanto no hay diferencia en las medidas de anchura y longitud. Esto confirma los resultados del paso anterior.
+
+```{r}
+t.test(BaseDatosFinal$Anchura[BaseDatosFinal$Tipo == "1"], BaseDatosFinal$Longitud[BaseDatosFinal$Tipo == "1"])
+```
+```{r}
+t.test(BaseDatosFinal$Anchura[BaseDatosFinal$Tipo == "0"], BaseDatosFinal$Longitud[BaseDatosFinal$Tipo == "0"])
+```
+
 
 ## Conclusión
 
-Como hemos podido observar a lo largo de las pruebas realizadas en este trabajo, las variables Anchura, Longitud, Grosor y Peso no han mostrado por si solas ni en modelos logísticos multiples, relaciones significativas con la variable Tipo. La única que se ha acercado a tener una relación significativa ha sido la Longitud, pero aunque estaba cerca, no llegaba a la cifra necesaria. Sin embargo, con la proporción longitud/anchura, una relación arqueologicamente adecuada, vemos que si se puede hablar de una relación significativa, aunque sea por poco. Por ello hice una media con los valores de Longitud_Anchura con respecto a 0 o 1. Con esto se observa que "blade"(1) se diferencia por tener más longitud que anchura. Especificamente, la anchura es dos tercios de la longitud. Esto choca con la teoría inicial, la cual tenía como idea que la longitud de las laminas suele ser el doble del ancho. Por un lado vemos que la media sigue dando una mayor longitud que anchura, pero por el otro es menor de lo esperado. Esto puede deberse a varias causas, para empezar puede ser el resultado de que el tamaño de la muestra a analizar no es lo suficientemente grande (se necesitarían más piezas). Otro motivo puede deberse a la cultura de la que proceden los instrumentos y el material del que están hechos (obsidiana), es decir, que quizás en la cultura procedente de los instrumentos, el tamaño característico de las laminas sea diferente. Y como último motivo, pero no menos importante, este resultado obtenido puede ser causa de que los materiales analizados no estén en perfectas condiciones y por ende, algunas piezas no están completas, si no que algunas podrían estar partidas.
+Como hemos podido observar a lo largo de las pruebas realizadas en este trabajo, las variables Anchura, Longitud, Grosor y Peso no han mostrado por si solas ni en modelos logísticos multiples, relaciones significativas con la variable Tipo. La única que se ha acercado a tener una relación significativa ha sido la Longitud, pero aunque estaba cerca, no llegaba a la cifra necesaria. Sin embargo, con la proporción longitud/anchura, una relación arqueologicamente adecuada, vemos que si se puede hablar de una relación significativa, aunque sea por poco.
+
+Por ello hice una media con los valores de Longitud_Anchura con respecto a 0 o 1. Con esto se observa que "blade"(1) se diferencia por tener más longitud que anchura. Especificamente, la anchura es dos tercios de la longitud. Esto choca con la teoría inicial, la cual tenía como idea que la longitud de las laminas suele ser el doble del ancho. Por un lado vemos que la media sigue dando una mayor longitud que anchura, pero por el otro es menor de lo esperado. Esto puede deberse a varias causas, para empezar puede ser el resultado de que el tamaño de la muestra a analizar no es lo suficientemente grande (se necesitarían más piezas). Otro motivo puede deberse a la cultura de la que proceden los instrumentos y el material del que están hechos (obsidiana), es decir, que quizás en la cultura procedente de los instrumentos, el tamaño característico de las laminas sea diferente. Y como último motivo, pero no menos importante, este resultado obtenido puede ser causa de que los materiales analizados no estén en perfectas condiciones y por ende, algunas piezas no están completas, si no que algunas podrían estar partidas.
+
+Para confirmar que en "blade" se observaba una diferencia entre longitud y anchura llevé a cabo un test t, el cual confirmó mis resultados.
 
 Comparando con el resultado de mi compañera Inés, quien también realizó un estudio sobre piezas de obsidiana de la misma zona, observo que aunque los resultados de los ejercicios varían, también se encuentra con la característica de que "flake" tiene de media lo mismo de ancho que de largo y que "blade" tiene mayor longitud que anchura. Además, la variable Longitud es la única que muestra una relación significativa con la variable Tipo.
 
-Por tanto, diría que el principal parámetro arqueométrico que permite diferenciar los "flake" de los "blade" es la Longitud, en mi caso se hace más claro con la proporción longitud/anchura. 
+Por tanto, diría que el principal parámetro arqueométrico que permite diferenciar los "flake" de los "blade" es la Longitud, siendo significativo solo para los "blade", en mi caso se hace más claro con la proporción longitud/anchura. 
 
 ## Fuentes
 
