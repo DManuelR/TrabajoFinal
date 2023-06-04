@@ -1,17 +1,18 @@
 ---
 title: "TrabajoFinal"
 author: "David M. Villalobo"
-date: "2023-06-03"
+date: "2023-05-26"
 output: html_document
 ---
 ## Introducción
 
-La base de datos utilizada para este trabajo, obtenida de la página web "Comparative Archaeology Database", presenta diferentes Laminas (blade) y Lascas (flake) de obsidiana, y cada una presenta una serie de variables características (Anchura, Grosor, Longitud y Peso). Para este trabajo he tenido en cuenta que la norma general sobre las laminas y las lascas, es que las laminas suelen ser dos veces más largas que anchas. En este trabajo buscaré si hay relación entre los diferentes parámetros
-arqueométricos con respecto a que un instrumento sea blade o flake. 
+La base de datos utilizada para este trabajo, obtenida de la página web "Comparative Archaeology Database", presenta diferentes Laminas (blade) y Lascas (flake) de obsidiana, y cada una presenta una serie de variables características (Anchura, Grosor, Longitud y Peso). Para este trabajo he tenido en cuenta que la norma general sobre las laminas y las lascas, es que las laminas suelen ser dos veces más largas que anchas. En este trabajo buscaré si hay relación entre los diferentes parámetros arqueométricos con respecto a que un instrumento sea blade o flake.
+
+Las lascas y las laminas son piezas líticas productos de las técnicas de talla. La primera es una porción plana o curva extraida de un núcleo, y la segunda es una pieza alargada y delgada obtenida del desbaste y talla de un núcleo o de una lasca previa. Las estudiadas en este trabajo están hechas en obsidiana, un material perfecto por su dureza y la capacidad de mantener los bordes afilados. 
 
 ## Primer Paso
 
-En la variable Tipo, las opciones blade y flake son renombradas como 1 (blade) y 0 (flake). Esto nos ayudará para llevar a cabo modelos logísticos. Suele llevarse a cabo con variables categóricas como es en este caso.
+En la variable Tipo, las opciones blade y flake son renombradas como 1 (blade) y 0 (flake). Esto nos ayudará para llevar a cabo modelos logísticos. Este proceso suele llevarse a cabo con variables categóricas como es en este caso.
 
 ```{r setup}
 library(plyr)
@@ -20,7 +21,7 @@ BaseDatosFinal$Tipo <- mapvalues(BaseDatosFinal$Tipo, from = c("blade", "flake")
 
 ## Segundo Paso
 
-Realizo gráficos de distribución para poder tener una visión general de la variabilidad de los datos, ver patrones y valores atípicos. Para utilizar los códigos es necesario la librería de ggplot2. Los puntos que se muestran se distribuyen según las variables utilizadas. La función color = Tipo dentro de aes() nos permite hacer una diferenciación por colores de cada categoría de la variable Tipo. Azul hace referencia a blade(1) y rojo es flake(0).
+Realizo gráficos de distribución para poder tener una visión general de la variabilidad de los datos, ver patrones y valores atípicos. Para utilizar los códigos es necesario la librería de ggplot2. Los puntos que se muestran se distribuyen según las variables utilizadas. La función color = Tipo dentro de aes() nos permite hacer una diferenciación por colores de cada categoría de la variable Tipo. El color azul hace referencia a blade(1) y rojo es flake(0).
 
 ```{r cars}
 library(ggplot2)
@@ -114,29 +115,34 @@ BaseDatosFinal$Longitud_Anchura <- BaseDatosFinal$Longitud/BaseDatosFinal$Anchur
 
 ## Septimo Paso
 
-Volvemos a realizar un modelo simple, pero esta vez con la nueva variable creada. Vemos que el valor AIC obtenido es el más bajo hasta el momento, por lo que indica un mejor ajuste del modelo. 
+Volvemos a realizar un modelo logístico simple, pero esta vez con la nueva variable creada. Vemos que el valor AIC obtenido es el más bajo hasta el momento, por lo que indica un mejor ajuste del modelo. 
 
 
 ```{r}
 model5 <- glm(Tipo_fac ~ Longitud_Anchura, data = BaseDatosFinal, family = binomial())
 summary(model5)
 ```
-Podemos observar que en este caso si existe una relación significativa, aunque poca, algo que seguramente se deba al tamaño de la muestra utilizada. 
+Podemos observar que en este caso sí existe una relación significativa, aunque poca, algo que seguramente se deba al tamaño de la muestra utilizada. 
 
 ## Octavo Paso
 
-
+Realizamos modelos logísticos multiples, uno con el peso y el otro con el grosor.
 
 ```{r}
 model_8 <- glm(Tipo_fac ~ Longitud_Anchura + Peso, data = BaseDatosFinal, family = binomial())
 summary(model_8)
 ```
-
-
 ```{r}
 model_9 <- glm(Tipo_fac ~ Longitud_Anchura + Grosor, data = BaseDatosFinal, family = binomial())
 summary(model_9)
 ```
+Después de ver los resultados de los pasos 7 y 8 podemos decir que el mejor modelo es el modelo simple con la variable Longitud_Anchura, que es la proporción longitud/anchura. Tiene una relación significativa y es la única que puede explicar por qué es "blade" o "flake". 
+
+## Noveno Paso
+
+Con los códigos utilizados en esta parte podemos calcular la media de los valores de la columna Longitud_Anchura, en correspondencia a las filas en las que el valor coincida con 0 (primer código) o 1 (segundo código) de la columna Tipo.
+
+Al observar la proporción promedio de cada tipo de instrumento, vemos que "flake"(0) o también conocido como lascas, da un resultado de 1, por lo que podemos considerar que su anchura y largo son iguales. Por otro lado, la proporción obtenida para "blade"(1) o laminas, es de 1.33,  por lo que se puede considerar que la anchura es dos tercios de la longitud.
 
 
 ```{r}
@@ -148,5 +154,20 @@ mean(BaseDatosFinal$Longitud_Anchura [BaseDatosFinal$Tipo == "0"])
 mean(BaseDatosFinal$Longitud_Anchura [BaseDatosFinal$Tipo == "1"])
 ```
 
+## Conclusión
+
+Como hemos podido observar a lo largo de las pruebas realizadas en este trabajo, las variables Anchura, Longitud, Grosor y Peso no han mostrado por si solas ni en modelos logísticos multiples, relaciones significativas con la variable Tipo. La única que se ha acercado a tener una relación significativa ha sido la Longitud, pero aunque estaba cerca, no llegaba a la cifra necesaria. Sin embargo, con la proporción longitud/anchura, una relación arqueologicamente adecuada, vemos que si se puede hablar de una relación significativa, aunque sea por poco. Por ello hice una media con los valores de Longitud_Anchura con respecto a 0 o 1. Con esto se observa que "blade"(1) se diferencia por tener más longitud que anchura. Especificamente, la anchura es dos tercios de la longitud. Esto choca con la teoría inicial, la cual tenía como idea que la longitud de las laminas suele ser el doble del ancho. Por un lado vemos que la media sigue dando una mayor longitud que anchura, pero por el otro es menor de lo esperado. Esto puede deberse a varias causas, para empezar puede ser el resultado de que el tamaño de la muestra a analizar no es lo suficientemente grande (se necesitarían más piezas). Otro motivo puede deberse a la cultura de la que proceden los instrumentos y el material del que están hechos (obsidiana), es decir, que quizás en la cultura procedente de los instrumentos, el tamaño característico de las laminas sea diferente. Y como último motivo, pero no menos importante, este resultado obtenido puede ser causa de que los materiales analizados no estén en perfectas condiciones y por ende, algunas piezas no están completas, si no que algunas podrían estar partidas.
+
+Comparando con el resultado de mi compañera Inés, quien también realizó un estudio sobre piezas de obsidiana de la misma zona, observo que aunque los resultados de los ejercicios varían, también se encuentra con la característica de que "flake" tiene de media lo mismo de ancho que de largo y que "blade" tiene mayor longitud que anchura. Además, la variable Longitud es la única que muestra una relación significativa con la variable Tipo.
+
+Por tanto, diría que el principal parámetro arqueométrico que permite diferenciar los "flake" de los "blade" es la Longitud, en mi caso se hace más claro con la proporción longitud/anchura. 
+
+## Fuentes
+
+https://www.rdocumentation.org/
+
+https://community.rstudio.com/
+
+https://www.r-bloggers.com/
 
 
