@@ -78,3 +78,8 @@ mean(BaseDatosFinal$Longitud_Anchura [BaseDatosFinal$Tipo == "0"]) # La proporci
 mean(BaseDatosFinal$Longitud_Anchura [BaseDatosFinal$Tipo == "1"]) # La proporcion es 1,33 por lo que la anchura es dos tercios de la longitud en "blade".
 
 
+t.test(BaseDatosFinal$Anchura[BaseDatosFinal$Tipo == "1"], BaseDatosFinal$Longitud[BaseDatosFinal$Tipo == "1"])
+
+
+
+
