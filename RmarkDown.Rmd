@@ -8,9 +8,9 @@ output:
 ---
 ## Introducción
 
-La base de datos utilizada para este trabajo, obtenida de la página web "Comparative Archaeology Database", presenta diferentes Laminas (blade) y Lascas (flake) de obsidiana, y cada una presenta una serie de variables características (Anchura, Grosor, Longitud y Peso). Para este trabajo he tenido en cuenta que la norma general sobre las laminas y las lascas, es que las laminas suelen ser dos veces más largas que anchas. En este trabajo buscaré si hay relación entre los diferentes parámetros arqueométricos con respecto a que un instrumento sea blade o flake.
+Las lascas y las laminas son piezas líticas productos de las técnicas de talla. La primera es una porción plana o curva extraida de un núcleo, y la segunda es una pieza alargada y delgada obtenida del desbaste y talla de un núcleo o de una lasca previa. Las estudiadas en este trabajo están hechas en obsidiana, un material perfecto por su dureza y la capacidad de mantener los bordes afilados.
 
-Las lascas y las laminas son piezas líticas productos de las técnicas de talla. La primera es una porción plana o curva extraida de un núcleo, y la segunda es una pieza alargada y delgada obtenida del desbaste y talla de un núcleo o de una lasca previa. Las estudiadas en este trabajo están hechas en obsidiana, un material perfecto por su dureza y la capacidad de mantener los bordes afilados. 
+La base de datos utilizada para este trabajo, obtenida de la página web "Comparative Archaeology Database", presenta diferentes Laminas (blade) y Lascas (flake) de obsidiana, y cada una presenta una serie de variables características (Anchura, Grosor, Longitud y Peso). Para este trabajo he tenido en cuenta que la norma general sobre las laminas y las lascas, es que las laminas suelen ser dos veces más largas que anchas. En este trabajo buscaré si hay relación entre los diferentes parámetros arqueométricos con respecto a que un instrumento sea blade o flake.
 
 ## Importar base de datos
 
