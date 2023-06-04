@@ -33,46 +33,57 @@ BaseDatosFinal$Tipo_fac
 
 
 ```{r}
-summary(glm(Tipo_fac ~ Anchura, BaseDatosFinal, family = "binomial"))
+model <- glm(Tipo_fac ~ Anchura, data = BaseDatosFinal, family = binomial())
+summary(model)
 ```
 ```{r}
-summary(glm(Tipo_fac ~ Longitud, BaseDatosFinal, family = "binomial"))
-```
-
-```{r}
-summary(glm(Tipo_fac ~ Grosor, BaseDatosFinal, family = "binomial"))
+model2 <- glm(Tipo_fac ~ Longitud, data = BaseDatosFinal, family = binomial())
+summary(model2)
 ```
 
 ```{r}
-summary(glm(Tipo_fac ~ Peso, BaseDatosFinal, family = "binomial"))
+model3 <- glm(Tipo_fac ~ Grosor, data = BaseDatosFinal, family = binomial())
+summary(model3)
+```
+
+```{r}
+model4 <- glm(Tipo_fac ~ Peso, data = BaseDatosFinal, family = binomial())
+summary(model4)
 ```
 
 
 ```{r}
-summary(glm(Tipo_fac ~ Anchura + Longitud, BaseDatosFinal, family = "binomial"))
+model_1 <- glm(Tipo_fac ~ Anchura + Longitud, data = BaseDatosFinal, family = binomial())
+summary(model_1)
 ```
 ```{r}
-summary(glm(Tipo_fac ~ Grosor + Peso, BaseDatosFinal, family = "binomial"))
-```
-
-```{r}
-summary(glm(Tipo_fac ~ Anchura + Longitud + Grosor, BaseDatosFinal, family = "binomial"))
+model_2 <- glm(Tipo_fac ~ Grosor + Peso, data = BaseDatosFinal, family = binomial())
+summary(model_2)
 ```
 
 ```{r}
-summary(glm(Tipo_fac ~ Anchura + Longitud + Grosor + Peso, BaseDatosFinal, family = "binomial"))
+model_3 <- glm(Tipo_fac ~ Anchura + Longitud + Grosor, data = BaseDatosFinal, family = binomial())
+summary(model_3)
 ```
 
 ```{r}
-summary(glm(Tipo_fac ~ Longitud + Grosor + Peso, BaseDatosFinal, family = "binomial"))
+model_4 <- glm(Tipo_fac ~ Anchura + Longitud + Grosor + Peso, data = BaseDatosFinal, family = binomial())
+summary(model_4)
 ```
 
 ```{r}
-summary(glm(Tipo_fac ~ Longitud + Grosor, BaseDatosFinal, family = "binomial"))
+model_5 <- glm(Tipo_fac ~ Longitud + Grosor + Peso, data = BaseDatosFinal, family = binomial())
+summary(model_5)
 ```
 
 ```{r}
-summary(glm(Tipo_fac ~ Longitud + Peso, BaseDatosFinal, family = "binomial"))
+model_6 <- glm(Tipo_fac ~ Longitud + Grosor, data = BaseDatosFinal, family = binomial())
+summary(model_6)
+```
+
+```{r}
+model_7 <- glm(Tipo_fac ~ Longitud + Peso, data = BaseDatosFinal, family = binomial())
+summary(model_7)
 ```
 
 
@@ -81,16 +92,19 @@ BaseDatosFinal$Longitud_Anchura <- BaseDatosFinal$Longitud/BaseDatosFinal$Anchur
 ```
 
 ```{r}
-summary(glm(Tipo_fac ~ Longitud_Anchura, BaseDatosFinal, family = "binomial"))
+model5 <- glm(Tipo_fac ~ Longitud_Anchura, data = BaseDatosFinal, family = binomial())
+summary(model5)
 ```
 
 ```{r}
-summary(glm(Tipo_fac ~ Longitud_Anchura + Peso, BaseDatosFinal, family = "binomial"))
+model_8 <- glm(Tipo_fac ~ Longitud_Anchura + Peso, data = BaseDatosFinal, family = binomial())
+summary(model_8)
 ```
 
 
 ```{r}
-summary(glm(Tipo_fac ~ Longitud_Anchura + Grosor, BaseDatosFinal, family = "binomial"))
+model_9 <- glm(Tipo_fac ~ Longitud_Anchura + Grosor, data = BaseDatosFinal, family = binomial())
+summary(model_9)
 ```
 
 
